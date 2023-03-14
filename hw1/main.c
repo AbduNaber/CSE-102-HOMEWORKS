@@ -16,11 +16,18 @@ int part1(){
         temp = b;
         b = a%b;
         a = temp;
-   } 
-   return a;
+   }
+
+   if (a<0){
+     return a*(-1);
+   }
+   else{
+     return a;
+   }
 }
 
-int part2(){
+
+void part2(){
 
     int a;
     int b;
@@ -35,8 +42,6 @@ int part2(){
     sum = a+b;
 
     //printf("Result:\n%12d\n%12d\n     +\n     -------\n%12d\n",a,b,sum);
-    
-
     printf("Result:\n");
     printf("%12d\n",a);
     printf("%12d\n",b);
@@ -46,7 +51,7 @@ int part2(){
 }
 
 
-int part3(){
+void part3(){
     int a;
     int b;
     int product;
@@ -71,7 +76,6 @@ int part3(){
 
     while(temp!=0){
         printf("%*d\n",gap,a*(temp%mod));
-
         temp = temp - (temp%mod);
         temp = temp/10;
         gap = gap-1;
@@ -84,9 +88,38 @@ int part3(){
 
 }
 
+int part4(){
+    int a;
+    printf("enter a number : ");
+    scanf("%d",&a);
+
+    if(1<a && a<10){
+        if(a>5){
+            printf("The integer you entered is greater than 5");
+            return 0;
+        }
+
+        else if(a<=5){
+            printf("The integer you entered is less than or equal to 5");
+            return 0;
+        }
+
+    }
+
+    else {
+        printf("Invalid input");
+        return 0;
+    }
+}
+
 
 int main(){
- //printf("GCD is = %d\n\n",part1());
- //part2();
+ printf("GCD is = %d\n\n",part1());
+ part2();
  part3();
+ part4();
+
+
+
+ return 0;
 }
