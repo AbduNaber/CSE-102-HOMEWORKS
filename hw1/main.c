@@ -60,6 +60,7 @@ void part2(){
 }
 /* end of summing two number function*/
 
+
 void part3(){
     int a;
     int b;
@@ -97,29 +98,41 @@ void part3(){
 
 }
 
-int part4(){
-    int a;
-    printf("enter a number : ");
-    scanf("%d",&a);
 
-    if(1<a && a<10){
-        if(a>5){
+/*this function prompts for integer in [1,10], outputs its relation to 5 and outputs "Invalid input" for values outside of range. */
+int part4() {
+
+    /*Declare an integer variable to store the user input*/ 
+    int a;
+
+    /*gets numbers from user*/
+    printf("Enter a number: ");
+    scanf("%d", &a);
+
+    // Check if the user input is within the range of 1 to 10 (inclusive)
+    if (1 < a && a < 10) {
+
+        /*If the input is greater than 5, print a message indicating so*/ 
+        if (a > 5) {
             printf("The integer you entered is greater than 5");
             return 0;
         }
 
-        else if(a<=5){
+        /*If the input is less than or equal to 5, print a message indicating so*/ 
+        else if (a <= 5) {
             printf("The integer you entered is less than or equal to 5");
             return 0;
         }
-
     }
 
+    /*If the input is not within the range of 1 to 10 (inclusive), print an error message*/ 
     else {
         printf("Invalid input");
         return 0;
     }
 }
+/* end of checking relation to 5 function*/
+
 
 
 int main(){
