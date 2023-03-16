@@ -1,5 +1,26 @@
 #include <stdio.h>
 
+/*Function declaration. For more information about a function, go to the location of the function that you want.*/
+int part1();
+void part2();
+int digit_counter(int a);
+void part3();
+int part4();
+
+
+int main(){
+ printf("GCD is = %d\n\n",part1()); /*prints output of GDC function*/
+
+ /*calls other parts of homework*/
+ part2();
+ part3();
+ part4();
+
+ /*successful completion of the program*/
+ return 0;
+}
+/*end of main function*/
+
 /* this function uses to calculate GDC. for more info look at link*/
 int part1(){
 
@@ -55,10 +76,27 @@ void part2(){
     printf("%12d\n",b);
     printf("%6s\n","+");
     printf("%12s\n","-------");
-    printf("%12d\n",sum);
+    printf("%12d\n\n",sum);
     /*end of displaying*/
 }
 /* end of summing two number function*/
+
+
+/* this function counts digit of given number*/
+int digit_counter(int a){
+    int counter = 0;
+    
+    
+    while(a !=0){
+        counter++; /* increase digit counter */
+
+        /*reduce one digit of given number*/
+        a = a - (a%10);
+        a = a/10;
+    }
+
+    return counter;
+}
 
 /*his function takes 2 number from user and does it using multiplication table as as if done manually on paper*/
 void part3(){
@@ -101,17 +139,24 @@ void part3(){
         gap = gap-1;
     }
 
-    /*Prints the final result*/
-    printf("%4s\n","+");
-    printf("%13s\n","----------");
-    printf("%13d\n",product);
+    /*if multiplication table has row more than one, prints end of multiplication table (row is second part of multiplication table that you do sum in here )*/
+    if(digit_counter(a) !=1 && digit_counter(b) !=1){
+        printf("%4s\n","+");
+        printf("%13s\n","----------");
+        printf("%13d\n\n",product);
+    }
+
+    
 
 
 }
 /* end of printing multiplication table*/
 
+
+
+
 /*this function prompts for integer in [1,10], outputs its relation to 5 and outputs "Invalid input" for values outside of range. */
-int part4() {
+int part4(){
 
     /*Declare an integer variable to store the user input*/ 
     int a;
@@ -146,13 +191,3 @@ int part4() {
 
 
 
-int main(){
- printf("GCD is = %d\n\n",part1());
- part2();
- part3();
- part4();
-
-
-
- return 0;
-}
