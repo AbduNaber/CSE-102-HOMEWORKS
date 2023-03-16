@@ -62,42 +62,53 @@ void part2(){
 
 
 void part3(){
+    /*integer variables use for product  */
     int a;
     int b;
-    int product;
+    int product; /*to store the product of a and b*/
 
+    /*Prompt the user to enter the first integer.*/
     printf("first number : ");
     scanf("%d",&a);
 
+    /*Prompt the user to enter the first integer.*/
     printf("second number: ");
     scanf("%d",&b);
 
-    product = a*b;
+    product = a*b; /*Calculate the product of the two integers.*/
 
+    /*Prints the multiplication table.*/
     printf("Result:\n");
     printf("%13d\n",a);
     printf("%13d\n",b);
     printf("%4s\n","*");
     printf("%13s\n","----------");
-
-    int temp =b;
-    int mod=10;
+    
+    /* variables use for multiplication table's row*/
+    int temp =b; 
+    int mod=10;  
     int gap=13;
 
+    /* this algorithm calculates one row of multiplication table and shifts left and does it again until finished */
     while(temp!=0){
-        printf("%*d\n",gap,a*(temp%mod));
+        printf("%*d\n",gap,a*(temp%mod)); /*prints one row*/
+        
+        /*reduces one digit */
         temp = temp - (temp%mod);
         temp = temp/10;
+
+        /*shifts left*/
         gap = gap-1;
     }
 
+    /*Prints the final result*/
     printf("%4s\n","+");
     printf("%13s\n","----------");
     printf("%13d\n",product);
 
 
 }
-
+/* end of printing multiplication table*/
 
 /*this function prompts for integer in [1,10], outputs its relation to 5 and outputs "Invalid input" for values outside of range. */
 int part4() {
