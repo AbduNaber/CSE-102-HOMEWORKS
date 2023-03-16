@@ -170,20 +170,20 @@ int part4(){
 
         /*If the input is greater than 5, print a message indicating so*/ 
         if (a > 5) {
-            printf("The integer you entered is greater than 5");
+            printf("The integer you entered is greater than 5\n");
             return 0;
         }
 
         /*If the input is less than or equal to 5, print a message indicating so*/ 
         else if (a <= 5) {
-            printf("The integer you entered is less than or equal to 5");
+            printf("The integer you entered is less than or equal to 5\n");
             return 0;
         }
     }
 
     /*If the input is not within the range of 1 to 10 (inclusive), print an error message*/ 
     else {
-        printf("Invalid input");
+        printf("Invalid input\n");
         return 0;
     }
 }
