@@ -31,29 +31,34 @@ int part1(){
 }
 /* end of calculating GCD function*/
 
+/* this function takes two numbers from the user and displays their sums as if the arithmetic is done on*/
 void part2(){
 
+    /*variables using for sum*/
     int a;
     int b;
     int sum;
 
+    /*gets numbers from user*/
     printf("first number : ");
     scanf("%d",&a);
 
     printf("second number: ");
     scanf("%d",&b);
-    
-    sum = a+b;
+    /*end of getting*/
 
-    //printf("Result:\n%12d\n%12d\n     +\n     -------\n%12d\n",a,b,sum);
+    sum = a+b; /* answer of sum*/
+
+    /* displays on cmd as if it does on paper*/
     printf("Result:\n");
     printf("%12d\n",a);
     printf("%12d\n",b);
     printf("%6s\n","+");
     printf("%12s\n","-------");
     printf("%12d\n",sum);
+    /*end of displaying*/
 }
-
+/* end of summing two number function*/
 
 void part3(){
     int a;
