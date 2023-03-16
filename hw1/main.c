@@ -1,23 +1,27 @@
 #include <stdio.h>
 
+/* this function uses to calculate GDC. for more info look at link*/
 int part1(){
 
     int temp;
     int a;
     int b;
 
-    printf("enter first number: "),
+    printf("enter first number: "); /*gets first number from user*/
     scanf("%d",&a);
 
-    printf("enter second number: "),
+    printf("enter second number: "); /*gets second number from user*/
     scanf("%d",&b);
 
+    /*algorithm of calculating GDC. For more info go to link and look at Implemantations topic*/
     while(b!=0){
         temp = b;
         b = a%b;
         a = temp;
    }
+   /*end of algoritm*/
 
+   /*If user enters negative number, algorithm calculates negative GCD, but GCD can not be negative. This part reverse negative number to positive*/ 
    if (a<0){
      return a*(-1);
    }
@@ -25,7 +29,7 @@ int part1(){
      return a;
    }
 }
-
+/* end of calculating GCD function*/
 
 void part2(){
 
