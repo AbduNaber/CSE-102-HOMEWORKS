@@ -121,7 +121,7 @@ int part4() {
     scanf("%d", &a);
 
     // Check if the user input is within the range of 1 to 10 (inclusive)
-    if (1 < a && a < 10) {
+    if (1 <= a && a <= 10) {
 
         /*If the input is greater than 5, print a message indicating so*/ 
         if (a > 5) {
