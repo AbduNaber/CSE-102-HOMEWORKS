@@ -60,7 +60,7 @@ void part2(){
 }
 /* end of summing two number function*/
 
-
+/*his function takes 2 number from user and does it using multiplication table as as if done manually on paper*/
 void part3(){
     /*integer variables use for product  */
     int a;
