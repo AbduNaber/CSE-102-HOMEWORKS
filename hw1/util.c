@@ -4,6 +4,7 @@
 /* this function uses to calculate GDC. for more info look at link*/
 int part1(){
 
+    /*variables using for GCD*/
     int temp;
     int a;
     int b;
@@ -62,9 +63,10 @@ void part2(){
 /* end of summing two number function*/
 /* this function counts digit of given number*/
 int digit_counter(int a){
-    int counter = 0;
     
+    int counter = 0; /*to count digit*/
     
+    /*increase digit counter until given number has no digit*/
     while(a !=0){
         counter++; /* increase digit counter */
 
@@ -78,6 +80,7 @@ int digit_counter(int a){
 
 /*his function takes 2 number from user and does it using multiplication table as as if done manually on paper*/
 void part3(){
+
     /*integer variables use for product  */
     int a;
     int b;
@@ -105,9 +108,6 @@ void part3(){
     int mod=10;  
     int gap=13;
 
-    
-    
-
     /*if multiplication table has row more than one, prints end of multiplication table (rows are second part of multiplication table that you do sum in here )*/
     if(digit_counter(a) !=1 && digit_counter(b) !=1){
 
@@ -126,7 +126,7 @@ void part3(){
         printf("%13s\n","----------");
         printf("%13d\n\n",product);
     }
-
+    
     /* if one of number's digit is one ,just print product*/
     else{
         printf("%13d\n\n",product);
