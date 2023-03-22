@@ -1,6 +1,6 @@
 # Prerequisites
 *.d
-
+test.c
 # Object files
 *.o
 *.ko
