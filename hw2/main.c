@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+
 
 void part1(){
 
@@ -19,10 +21,54 @@ void part1(){
     }
 }
 
-void calculation(char format, int m, int n, char operator, int operand1, int operand2){
+double calculation(char operator, double operand1, double operand2){
+    double result;
     
+    switch (operator){
+    case '+':
+        result= operand1+operand2;
+        break;
+    case '-':
+        result= operand1-operand2;
+        break;
+    case '/':
+        result = operand1 / operand2;
+        break;
+    case '*':
+        result = operand1 * operand2;
+        break;
+    case '%':
+        result = fmod(operand1,operand2) ;
+        break; 
+    case '!':
+        if (operand1 < 0){
+            printf("Error! Factorial of a negative number doesn't exist.");
+        }
+        else {
+        for (int i = 1; i <= operand1; ++i) {
+            result *= i;
+        }
+        }
+        break;
+    case '^':
+        result=pow(operand1,operand2);
+        break;
+    }
+    return result;
 }
 
+void display(char format, int m, int n,double result){
+    if(format=='S' || format =='s'){
+        int result_int;
+        double result_float;
+        result_int = (int)result;
+        result_float = result - result_int;
+
+    }
+    else if(format=='I' || format =='i'){
+
+    }
+}
 
 
 void part2(){
@@ -31,33 +77,35 @@ void part2(){
     int m;
     int n;
     char operator;
-    int operand1;
-    int operand2;
+    double operand1;
+    double operand2;
+    double result;
 
     printf("***************************\n");
     printf("enter the format of output (S and I): ");
     scanf("%c",&format);
-    f(format=='S'){
+    if(format=='S'){
         printf("enter m and n values: ");
         scanf("%d %d",&m,&n);
     }
     printf("enter the operation(+,-,/,*,%%,!,^): ");
     scanf("%c",&operator);
 
-    if(operator!='!'){
+    if(operator != '!'){
         
         printf("enter the first operand: ");
-        scanf("%d",&operand1);
+        scanf("%lf",&operand1);
         printf("enter the second operand: ");
-        scanf("%d",&operand2);
+        scanf("%lf",&operand2);
     }
+
     else{
         printf("enter the operand: ");
-        scanf("%d",&operand1);
+        scanf("%lf",&operand1);
     }
 
-    calculation(format,m,n,operator,operand1,operand2);
-
+    result = calculation(operator,operand1,operand2);
+    display(format,m,n,result);
 
 }
 
