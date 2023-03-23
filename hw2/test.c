@@ -30,10 +30,10 @@ int digit_counter(int a){
     return counter;
 }
 int main() {
-    int m=8;
-    int n = 2;
+    int m=6;
+    int n = 4;
 
-    double result= 123.4567;
+    double result= 23;
     int result_int;
     double result_float;
     int digit_of_int ;
@@ -44,15 +44,26 @@ int main() {
     digit_of_int = digit_counter(result_int);
     printf("aa%daa",digit_counter(result_int));
 
+
+
+
     while((m-n)>digit_of_int){
-        e++;
         result_int = result_int *10;
         result_int = result_int + (int)(result_float*10);
         result_float = (result_float*10)- (int)(result_float*10) ;
         digit_of_int++;
+        e--;
     }
+ 
+    while((m-n)<digit_of_int){ 
+        result_float = (result_float/10)+ ((result_int%10)/10.0);
+        result_int = (result_int - (result_int%10))/10;
+        digit_of_int--;
+        e++;
+    }
+
     double sum = result_int + result_float;
-    printf("%.*lfe%d",sum,e);
+    printf("%.*lfe%d",n,sum,e);
     
         
     
