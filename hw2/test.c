@@ -30,10 +30,10 @@ int digit_counter(int a){
     return counter;
 }
 int main() {
-    int m=6;
+    int m=8;
     int n = 4;
 
-    double result= 23;
+    double result= 12340000;
     int result_int;
     double result_float;
     int digit_of_int ;
