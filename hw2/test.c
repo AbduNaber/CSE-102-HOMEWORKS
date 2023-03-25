@@ -30,7 +30,26 @@ int digit_counter(int a){
     return counter;
 }
 int main() {
-    int m=8;
+    int m;
+    int n;
+    double num = 123.120023;
+    long int temp_result;
+    int counter=0;
+    int digit=0;
+
+    while (num / (long int)num != 1)  // loop runs until num/(int)num is 1
+    {
+        counter += 1;           // Adds 1 to count
+        num *= 10;            // num is multipled by 10
+    }
+    printf("%da",counter);
+    printf("%lf",num);
+    
+
+}
+
+void yedek(){
+        int m=8;
     int n = 4;
 
     double result= 12340000;
@@ -65,7 +84,4 @@ int main() {
     double sum = result_int + result_float;
     printf("%.*lfe%d",n,sum,e);
     
-        
-    
-
 }
