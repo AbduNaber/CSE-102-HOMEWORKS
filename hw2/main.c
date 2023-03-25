@@ -73,8 +73,7 @@ int digit_counter(int a){
     return counter;
 }
 
-
-void display(char format, int m, int n,double result){
+void display(char format, int m, int n,double operand1, double operand2, double result,char operator){
 
     int result_int;
     double result_float;
@@ -94,10 +93,9 @@ void display(char format, int m, int n,double result){
         
     }
     else if(format=='I' || format =='i'){
-
+        printf("%lf %c %lf = %.2lf\n",operand1,operator,operand2,result);
     }
 }
-
 
 void part2(){
 
@@ -117,7 +115,7 @@ void part2(){
         scanf("%d %d",&m,&n);
     }
     printf("enter the operation(+,-,/,*,%%,!,^): ");
-    scanf("%c",&operator);
+    scanf(" %c",&operator);
 
     if(operator != '!'){
         
@@ -132,14 +130,10 @@ void part2(){
         scanf("%lf",&operand1);
     }
 
-    result = calculation(operator,operand1,operand2);
-    display(format,m,n,result);
+    result = calculation(operator, operand1, operand2);
+    display(format, m, n, operand1, operand2, result,operator);
 
 }
-
-
-
-
 
 float calculate_grade(  float exam1 ,float exam2 ,float exam3,float assign1,float assign2){
 
@@ -152,7 +146,6 @@ float calculate_grade(  float exam1 ,float exam2 ,float exam3,float assign1,floa
 
     return final_grade;
 }
-
 
 void part3(){
 
@@ -216,6 +209,7 @@ void part3(){
         
 
 }
+
 int main(){
-    part3();
+    part2();
 }
