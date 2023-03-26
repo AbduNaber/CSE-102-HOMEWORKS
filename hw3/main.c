@@ -57,54 +57,58 @@ int gameplay(){
 
     printf("deneme");
     char move;
-
+    char temp ;
     while(!status(d,c)){
         printf("enter when you want to move(w,a,s,d): ");
-        scanf(" %c",&move);
-        printf("aaa%daaa\n",c);
+        
+        
+        scanf(" %c", &move);
+        
         switch (move){
-    case 'w':
-        if(c<=9){
-           printf("THEEE WALLLLL!!!!\n"); 
-        }
-        else{
-           c=c-size;
-           draw_room(size,d,c); 
-        }
-        break;
-    case 'a':
-        if(c%size==0){
-            printf("THEEE WALLLLL!!!!\n");
-        }
-        else{
-            c=c-1;
-            draw_room(size,d,c);
-        }
-        break;
-    case 's':
-        if(size*(size-1)<=c && c<size*size){
-            printf("THEEE WALLLLL!!!!\n");
-        }
-        else{
-            c=c+size;
-            draw_room(size,d,c);
-        }
-        break;
+            case 'w':
+                if(c<=9){
+                    printf("THEEE WALLLLL!!!!\n"); 
+                }
+                else{
+                    c=c-size;
+                    draw_room(size,d,c); 
+                }
+                break;
+            case 'a':
+                if(c%size==0){
+                    printf("THEEE WALLLLL!!!!\n");
+                }
+                else{
+                    c=c-1;
+                    draw_room(size,d,c);
+                }
+                break;
+            case 's':
+                if(size*(size-1)<=c && c<size*size && c!=0){
+                    printf("THEEE WALLLLL!!!!\n");
+                }
+                else{
+                    c=c+size;
+                    draw_room(size,d,c);
+                }
+                break;
 
-    case 'd':
-        if(c%(size-1)==0){
-            printf("THEEE WALLLLL!!!!\n");
+            case 'd':
+                if(c%(size-1)==0 && c!=0){
+                    printf("THEEE WALLLLL!!!!\n");
+                }
+                else{
+                    c=c+1;
+                    draw_room(size,d,c);
+                }
+                break;
+
+            default:
+                printf("enter valid movement!!\n");
+                break;
+            }
+        printf("aaa%daaa\n",c);
         }
-        else{
-            c=c+1;
-            draw_room(size,d,c);
-        }
-        break;
-    default:
-        printf("enter valid movement!!\n");
-        break;
-    }
-    }
     
 
 
