@@ -30,6 +30,45 @@ int digit_counter(int a){
     return counter;
 }
 int main() {
+
+    int m=9;
+    int n=5;
+    int int_num;
+    double num = 1.020229;
+    double temp_result1;
+    int counter=0;
+    int temp_result2;
+    int digit_int = digit_counter(num);
+    int e=0;
+    
+    for(int i=0;i<m-digit_int;i++){
+        num = num*10;
+        e--;
+    }
+    temp_result2 = num;
+
+    if(temp_result2%10==9){
+        temp_result2=temp_result2+1;
+    }
+
+    while(temp_result2%10==0){
+        temp_result2 = temp_result2/10;
+        e++;
+    }
+
+    temp_result1 = temp_result2/pow(10,n);
+    e = e+n;
+    int part_int = (int)temp_result1;
+    double part_float = temp_result1 -(int)temp_result1;
+
+
+    printf("%0*d%.*lfe%d",m-n-1,part_int,n,part_float,e);
+}
+
+
+
+
+void yedek2(){
     int m;
     int n;
     double num = 123.120023;
@@ -45,14 +84,13 @@ int main() {
     printf("%da",counter);
     printf("%lf",num);
     
-
 }
 
 void yedek(){
-        int m=8;
+    int m=8;
     int n = 4;
 
-    double result= 12340000;
+    double result= 12123.11;
     int result_int;
     double result_float;
     int digit_of_int ;
