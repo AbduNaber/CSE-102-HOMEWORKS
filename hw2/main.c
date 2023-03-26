@@ -81,16 +81,6 @@ void display(char format, int m, int n,double operand1, double operand2, double 
     int e=0;
     if(format=='S' || format =='s'){
         
-        result_int = (int)result;
-        result_float = result - result_int;
-        digit_of_int = digit_counter(result_int);
-        if ((m-n)>digit_of_int){
-            e++;
-            result_int = result_int *10;
-            result_int = result_int + (int)(result_float*10);
-            digit_of_int++;
-        }
-        
     }
     else if(format=='I' || format =='i'){
         printf("%lf %c %lf = %.2lf\n",operand1,operator,operand2,result);
