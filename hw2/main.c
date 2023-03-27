@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 
-
 void part1(){
 
     int number;
@@ -45,8 +44,9 @@ double calculation(char operator, double operand1, double operand2){
             printf("Error! Factorial of a negative number doesn't exist.");
         }
         else {
-        for (int i = 1; i <= operand1; ++i) {
+        for (int i = 1; i <= operand1; i++) {
             result *= i;
+            printf("bb%lfbb",result);
         }
         }
         break;
@@ -79,9 +79,42 @@ void display(char format, int m, int n,double operand1, double operand2, double 
     double result_float;
     int digit_of_int ;
     int e=0;
+    printf("aa%daa",n);
+    printf("aa%daa",m);
+    printf("aa%lfaa",result);
+
     if(format=='S' || format =='s'){
         
+        double temp_result1;
+        int temp_result2;
+        int digit_int = digit_counter(result);
+        int e=0;
+        
+        for(int i=0;i<m-digit_int;i++){
+            result = result*10;
+            e--;
+            printf("b");
+        }
+
+        temp_result2 = result;
+
+        if(temp_result2%10000==9999){
+            temp_result2=temp_result2+1;
+        }
+
+        while(temp_result2%10==0 && temp_result2 != 0){
+            temp_result2 = temp_result2/10;
+            e++;
+            
+        }
+
+        temp_result1 = temp_result2/pow(10,n);
+
+        e = e+n;
+
+        printf("%0*.*lfe%d",m+1,n,temp_result1,e);    
     }
+
     else if(format=='I' || format =='i'){
         printf("%lf %c %lf = %.2lf\n",operand1,operator,operand2,result);
     }
@@ -100,9 +133,10 @@ void part2(){
     printf("***************************\n");
     printf("enter the format of output (S and I): ");
     scanf("%c",&format);
-    if(format=='S'){
+    if(format=='S' || format=='s'){
         printf("enter m and n values: ");
         scanf("%d %d",&m,&n);
+        
     }
     printf("enter the operation(+,-,/,*,%%,!,^): ");
     scanf(" %c",&operator);
@@ -118,6 +152,8 @@ void part2(){
     else{
         printf("enter the operand: ");
         scanf("%lf",&operand1);
+        printf("qq%lfqq",operand1);
+        operand2=0;
     }
 
     result = calculation(operator, operand1, operand2);
@@ -129,9 +165,7 @@ float calculate_grade(  float exam1 ,float exam2 ,float exam3,float assign1,floa
 
     float sum_exam = exam1+ exam2 + exam3;
     float sum_assign = assign1 + assign2;
-
     float final_grade;
-
     final_grade = (sum_exam/3)*0.6 + (sum_assign/2)*0.4;
 
     return final_grade;
@@ -185,8 +219,6 @@ void part3(){
         }
     }
 
-
-
     final_grade =  calculate_grade(exam1,exam2,exam3,assign1,assign2);
     printf("final grade: %.2f ",final_grade);
 
@@ -197,8 +229,8 @@ void part3(){
         printf("Passed!");
     }
         
-
 }
+
 
 int main(){
     part2();
