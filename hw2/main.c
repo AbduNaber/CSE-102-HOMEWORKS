@@ -21,7 +21,7 @@ void part1(){
 }
 
 double calculation(char operator, double operand1, double operand2){
-    double result;
+    double result=1;
     
     switch (operator){
     case '+':
@@ -44,10 +44,11 @@ double calculation(char operator, double operand1, double operand2){
             printf("Error! Factorial of a negative number doesn't exist.");
         }
         else {
-        for (int i = 1; i <= operand1; i++) {
+
+        for (int i = 1; i <= operand1; i++) {          
             result *= i;
-            printf("bb%lfbb",result);
         }
+
         }
         break;
     case '^':
@@ -75,25 +76,15 @@ int digit_counter(int a){
 
 void display(char format, int m, int n,double operand1, double operand2, double result,char operator){
 
-    int result_int;
-    double result_float;
-    int digit_of_int ;
     int e=0;
-    printf("aa%daa",n);
-    printf("aa%daa",m);
-    printf("aa%lfaa",result);
+    double temp_result1;
+    long int temp_result2;
+    int digit_int = digit_counter(result);
 
     if(format=='S' || format =='s'){
-        
-        double temp_result1;
-        int temp_result2;
-        int digit_int = digit_counter(result);
-        int e=0;
-        
         for(int i=0;i<m-digit_int;i++){
             result = result*10;
             e--;
-            printf("b");
         }
 
         temp_result2 = result;
@@ -108,15 +99,28 @@ void display(char format, int m, int n,double operand1, double operand2, double 
             
         }
 
-        temp_result1 = temp_result2/pow(10,n);
+        result = temp_result2/pow(10,n);
 
         e = e+n;
-
-        printf("%0*.*lfe%d",m+1,n,temp_result1,e);    
+        if(operator != '!'){
+            printf("%lf %c %lf = ",operand1,operator,operand2);
+            printf("%0*.*lfe%d",m+1,n,result,e); 
+        }
+        else{
+            printf("%.0lf%c = ",operand1,operator);
+            printf("%0*.*lfe%d\n",m+1,n,result,e);
+        }
+   
     }
 
     else if(format=='I' || format =='i'){
-        printf("%lf %c %lf = %.2lf\n",operand1,operator,operand2,result);
+        if(operator != '!'){
+             printf("%lf %c %lf = %.2lf\n",operand1,operator,operand2,result);
+        }
+        else{
+            printf("%.0lf%c = %.0lf\n",operand1,operator,result);
+        }
+       
     }
 }
 
@@ -136,6 +140,11 @@ void part2(){
     if(format=='S' || format=='s'){
         printf("enter m and n values: ");
         scanf("%d %d",&m,&n);
+
+        while(m<n){
+            printf("n can not be greater than m, Please enter another m and n values: ");
+            scanf("%d %d",&m,&n);
+        }
         
     }
     printf("enter the operation(+,-,/,*,%%,!,^): ");
@@ -152,7 +161,6 @@ void part2(){
     else{
         printf("enter the operand: ");
         scanf("%lf",&operand1);
-        printf("qq%lfqq",operand1);
         operand2=0;
     }
 

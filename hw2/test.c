@@ -31,13 +31,13 @@ int digit_counter(int a){
 }
 int main() {
 
-    int m=4;
-    int n=2;
+    int m=11;
+    int n=3;
     int int_num;
-    double num = 120;
+    double num = 1728;
     double temp_result1;
     int counter=0;
-    int temp_result2;
+    long int temp_result2;
     int digit_int = digit_counter(num);
     int e=0;
     
@@ -46,10 +46,12 @@ int main() {
         e--;
     }
     temp_result2 = num;
-
+    
     if(temp_result2%10000==9999){
         temp_result2=temp_result2+1;
     }
+    
+    
 
     while(temp_result2%10==0){
         temp_result2 = temp_result2/10;
@@ -57,7 +59,7 @@ int main() {
     }
 
     temp_result1 = temp_result2/pow(10,n);
-
+    
     e = e+n;
     
     printf("%0*.*lfe%d",m+1,n,temp_result1,e);
