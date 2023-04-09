@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define COSTUMER_NO "210104004072"
+#define VAT 0.18
+#define SDISCOUNT 0.125
+#define ADDISCOUNT 0.10
 
 int readmenu(){
 
@@ -26,13 +30,31 @@ int readmenu(){
             counter++;
         }
    }
+   fclose(fp);
 }
+
+int receipt_create(){
+    time_t t= time(NULL);
+    struct tm *tm = localtime(&t);
+    char s[64];
+    strftime(s,sizeof(s),"%d.%m.%Y/%H:%M",tm);
+
+    FILE *fp = fopen("receipt.txt","w"); 
+    fprintf(fp,COSTUMER_NO);
+    fprintf(fp,"%24s\n",s);
+    fprintf(fp,"------------------------------------\n");
+    fprintf(fp,"Product                  Price (TL)\n");
+    fprintf(fp,"-----------------------------------\n");
+
+}
+
 int servising(){
     int product;
     int serving;
-    int s1,s2,s3,s4,s5,s6,s7,s8,s9,s10;
+    
     float price;
-    FILE *fp = fopen("menu.txt","r");
+    FILE *fpm = fopen("menu.txt","r");
+    FILE *fpr = fopen("receipt.txt","a"); 
     while(price != EOF){
         fscanf(fp,"%d",s1);
     }
@@ -41,48 +63,16 @@ int servising(){
         scanf("%d",product);
         printf("How many servings do you want? ");
         scanf("%d",serving);
-        switch (product){
-        case 1:
-            s1= serving;
-            break;
-        case 2:
-            s2= serving;
-            break;
-        case 3:
-            s3= serving;
-            break;
-        case 4:
-            s4= serving;
-            break;
-        case 5:
-            s5= serving;
-            break;
-        case 6:
-            s6= serving;
-            break;
-        case 7:
-            s7= serving;
-            break;
-        case 8:
-            s8= serving;
-            break;
-        case 9:
-            s9= serving;
-            break;
-        case 10:
-            s10= serving;
-            break;
-        default:
-            break;
-        }
+
     }
 }
+
 int recipt(){
 
 }
 
 int main(){
-        readmenu();
+        receipt_create();
         
         
 }
