@@ -3,8 +3,7 @@
 #include <time.h>
 
 
-<<<<<<< HEAD
-=======
+
 int readmenu(){
 
    FILE *fp;
@@ -88,4 +87,5 @@ int main(){
         
         
 }
->>>>>>> eadbb19da284bd3d4d34af1374a4a2717bee5242
+
+
