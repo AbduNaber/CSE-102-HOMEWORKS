@@ -32,7 +32,7 @@ int part1(char filename[]){
     if(fp == NULL){
       printf("Error: Could not open file\n\n");
       return 1;
-    }
+    } 
 
     int alphabet[26] = {0};// Array stores how many repeated char does it have. a is alphabet [0] so z is alphabet[25]
 
