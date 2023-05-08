@@ -609,7 +609,7 @@ int filterProducts(){
                     }
                 }
             }
-            for(int i =0;i<j;i++) printf("%d\n",ismatch[i]);
+            
             pIDflag=0;
             
             for(int i=0;i<j;i=i+2){
