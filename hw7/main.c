@@ -6,7 +6,6 @@
 #define MAX_DICT 2000
 #define MAX_WORD_SIZE 20
 
-
 double dissimilarity(char *w1, char *w2, char dict[][MAX_WORD_SIZE], double threshold, int *test);
 
 int getVector(FILE *fp,int i,int j, double *vector1,double *vector2, int vector_size);
