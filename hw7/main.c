@@ -17,8 +17,7 @@ int strtostr(char *dest, char *src);
 int histogram(const char words[][2*MAX_WORD_SIZE],const int occurrences[], char hist[][2*MAX_WORD_SIZE+5+20]);
 int strlength(const char *str);
 int findDoubleStr(const char *str);
-
-
+int findNotStr(const char *str);
 int main(int argc, char *argv[]){
 
     char dict[MAX_DICT][MAX_WORD_SIZE];
@@ -49,7 +48,9 @@ int main(int argc, char *argv[]){
         if(occurrences[i] == 0){
 
             indict = dissimilarity(user_input[i],closest_word,dict,40.0,&closest_wordi);
-            if(indict == -1);
+            if(indict == -1){
+                hist_word[i][j] = '!';hist_word[i][j+1] = '\0';
+            }
             else{
                 occurrences[i]= occurrence(closest_word,input,input_words);
                 hist_word[i][j] = '-';
@@ -253,7 +254,6 @@ double dissimilarity(char *w1, char *w2, char dict[][MAX_WORD_SIZE], double thre
 
 }
 
-// find the vector of the word
 int findVector(int i,int vector_size,int num_word,double vector[]){
     FILE *fp; // file pointer
     fp = fopen("dictionary.txt", "r"); // open file for reading
@@ -269,11 +269,10 @@ int findVector(int i,int vector_size,int num_word,double vector[]){
         if(i!=j){
             fscanf(fp,"%*[^\n]\n");
         }
-        // if the word is found
         else{
             for(int k=0;k<vector_size;k++){
                 
-                fscanf(fp," %lf",&vector[k]); // read the vector
+                fscanf(fp," %lf",&vector[k]);
 
             }
         }
@@ -284,7 +283,6 @@ int findVector(int i,int vector_size,int num_word,double vector[]){
     return 0;
 }
 
-// copy src string to dest
 int strtostr(char *dest, char *src){
     int i=0;
     while(src[i] != '\0'){
@@ -295,20 +293,21 @@ int strtostr(char *dest, char *src){
     return i;
 }
 
-//print histogram
 int histogram(const char words[][2*MAX_WORD_SIZE],const int occurrences[], char hist[][2*MAX_WORD_SIZE+5+20]){
     int scale, i=0;
     while(words[i][0] != '-'){
         i++;
     }
+
     // find max occur 
-    int max = 0;
+    int max = 1;
     for(int j=0;j<i;j++){
         if(occurrences[j] > max){
             max = occurrences[j];
         }
     }
 
+    
     if ( max%20!=0) scale = max/20 +1;
     else scale = max/20;
     int lenght ;
@@ -341,7 +340,9 @@ int histogram(const char words[][2*MAX_WORD_SIZE],const int occurrences[], char 
     }
     else{
 
-        if(!findDoubleStr(words[0])){
+        if(findNotStr(words[0])) printf("\"%s\" doesn't appear in “input.txt”.\n",words[0]);
+    
+        else if(!findDoubleStr(words[0])){
             if(occurrences[0]!=0) printf("\"%s\" appears in “input.txt” %d times.\n",words[0],occurrences[0]);
             else printf("\"%s\" doesn't appear in “input.txt”.\n",words[0]);
         }
@@ -365,7 +366,7 @@ int histogram(const char words[][2*MAX_WORD_SIZE],const int occurrences[], char 
             if(occurrences[0]!=0) 
             printf("\"%s\" appears in \"input.txt\" %d times but \"%s\" appears %d times.\n", first, occurrences[0], second, occurrences[0]);
             else 
-            printf("\"%s\" doesn't appear in \"input.txt\" also \"%s\" doesn't appear in \n", first, second);
+            printf("\"%s\" doesn't appear in \"input.txt\" also \"%s\" doesn't appears \n", first, second);
         }
   
     return scale;
@@ -380,7 +381,15 @@ int findDoubleStr(const char *str){
     }
     return 0;
 }
-
+// find str includes ! sembol
+int findNotStr(const char *str){
+    int i=0;
+    while(str[i] != '\0'){
+        if(str[i]=='!') return 1;
+        i++;
+    }
+    return 0;
+}
 // strlength function
 int strlength(const char *str){
     int i=0;
