@@ -5,7 +5,8 @@
 #define MAX_WORD 300000
 #define MAX_DICT 2000
 #define MAX_WORD_SIZE 20
-
+#define THRESHOLD 40.0
+// function prototypes
 double dissimilarity(char *w1, char *w2, char dict[][MAX_WORD_SIZE], double threshold,int *closest_word);
 int occurrence(const char *w,const char words[][MAX_WORD_SIZE], int n);
 int strSpliter(const char arr[],char arr2[][MAX_WORD_SIZE] );
@@ -18,42 +19,47 @@ int histogram(const char words[][2*MAX_WORD_SIZE],const int occurrences[], char 
 int strlength(const char *str);
 int findDoubleStr(const char *str);
 int findNotStr(const char *str);
+// end of function prototypes
+
 int main(int argc, char *argv[]){
 
-    char dict[MAX_DICT][MAX_WORD_SIZE];
-    char input[MAX_WORD][MAX_WORD_SIZE];
+    char dict[MAX_DICT][MAX_WORD_SIZE]; // dictionary
+    char input[MAX_WORD][MAX_WORD_SIZE]; // input words
 
-    int dict_words = read_dict("dictionary.txt",dict);
-    int input_words = read_text("input.txt","ignore.txt",input);
+    int dict_words = read_dict("dictionary.txt",dict); // read dictionary
+    int input_words = read_text("input.txt","ignore.txt",input); // read input
 
-
-    char temp[MAX_WORD_SIZE*100];
+    // user input
+    char temp[MAX_WORD_SIZE*100]; 
     printf("Enter a word: ");
     scanf ("%[^\n]%*c", temp);
-    char user_input[100][MAX_WORD_SIZE];
+
+    char user_input[100][MAX_WORD_SIZE]; // store user input
     int inputcounter = strSpliter(temp,user_input); // split the user input into words return how many words are there
-    char closest_word[MAX_WORD_SIZE];
+    char closest_word[MAX_WORD_SIZE]; // store the closest word
 
-    int occurrences[inputcounter];
-    int closest_wordi,j,indict;
+    int occurrences[inputcounter]; // store the occurrences of each word
+    int closest_wordi,j,indict; // store the index of the closest word
 
-    char hist_word[inputcounter+1][2*MAX_WORD_SIZE];
-    char hist[inputcounter+1][2*MAX_WORD_SIZE+5+20];
+    char hist_word[inputcounter+1][2*MAX_WORD_SIZE]; // store the history of the words
+    char hist[inputcounter+1][2*MAX_WORD_SIZE+5+20]; // store the history of the words and occurrences
 
     for(int i=0;user_input[i][0]!='-';i++){
-        occurrences[i] = occurrence(user_input[i],input,input_words);
+        occurrences[i] = occurrence(user_input[i],input,input_words); // find the occurrences of each word
         
-        j = strtostr(hist_word[i],user_input[i]);
+        j = strtostr(hist_word[i],user_input[i]); // store the word in hist_word to print out later
 
-        if(occurrences[i] == 0){
+        if(occurrences[i] == 0){ // if the word is not in the input file go to the dictionary and find the closest word using dissimilarity
 
-            indict = dissimilarity(user_input[i],closest_word,dict,40.0,&closest_wordi);
-            if(indict == -1){
-                hist_word[i][j] = '!';hist_word[i][j+1] = '\0';
+            indict = dissimilarity(user_input[i],closest_word,dict,THRESHOLD,&closest_wordi); // find the closest word
+            if(indict == -1){ // if the word is not in the dictionary
+                continue;
             }
             else{
-                occurrences[i]= occurrence(closest_word,input,input_words);
-                hist_word[i][j] = '-';
+                occurrences[i]= occurrence(closest_word,input,input_words); // find the occurrences of the closest word
+                
+                // store the closest word in hist_word to print out later
+                hist_word[i][j] = '-'; 
                 hist_word[i][j+1] = '>'; 
                 strtostr(hist_word[i]+j+2,closest_word);
             }
@@ -66,13 +72,14 @@ int main(int argc, char *argv[]){
     hist_word[inputcounter][1] = '\0';
 
     int scale;
-    scale = histogram(hist_word,occurrences,hist);
+    scale = histogram(hist_word,occurrences,hist); // print out the histogram
 
     printf("Good bye!\n");
     return 0;
 
 }
 
+// find the occurrences of given word
 int occurrence(const char *w,const char words[][MAX_WORD_SIZE], int n){
     int count = 0;
     
@@ -85,6 +92,7 @@ int occurrence(const char *w,const char words[][MAX_WORD_SIZE], int n){
     return count;
 }
 
+// split the string into words and store in arr2 return how many words are there 
 int strSpliter(const char arr[],char arr2[][MAX_WORD_SIZE] ){
 
     //split string " " and store in arr2
@@ -112,6 +120,7 @@ int strSpliter(const char arr[],char arr2[][MAX_WORD_SIZE] ){
     return t+1;
 }
 
+// read the dictionary and store in dict return how many words are there
 int read_dict(const char *file_name, char dict[][MAX_WORD_SIZE]){
 
     FILE *fp; // file pointer
@@ -141,6 +150,7 @@ int read_dict(const char *file_name, char dict[][MAX_WORD_SIZE]){
     return i;
 }
 
+// read the input and store in words return how many words are there
 int  read_text(const char *text_file, const char *ignore_file, char words[][MAX_WORD_SIZE]){
 
     char ingoreWords[100][12];
@@ -201,6 +211,11 @@ int  read_text(const char *text_file, const char *ignore_file, char words[][MAX_
     return i;
 }
 
+/*
+    * find the closest word to the given word in the dictionary using dissimilarity formula
+    * input: word, dictinary and threshold
+    * outputs : distance between word and its closest word ,the index of the closest word and the closest word     
+*/ 
 double dissimilarity(char *w1, char *w2, char dict[][MAX_WORD_SIZE], double threshold, int *closest_wordi){
     FILE *fp; // file pointer
     fp = fopen("dictionary.txt", "r"); // open file for reading
@@ -210,8 +225,9 @@ double dissimilarity(char *w1, char *w2, char dict[][MAX_WORD_SIZE], double thre
     }
     
     int num_word, vector_size;
-    fscanf(fp,"num_word=%d, vector_size=%d\n",&num_word,&vector_size);
-    // find index w1 in dict arr
+    fscanf(fp,"num_word=%d, vector_size=%d\n",&num_word,&vector_size); // read the first line
+
+    // find index of word in dictionary array
     int index1 = -1,t=0;
     for(int i=0;i<num_word;i++){
         if(strcmp(w1,dict[i]) == 0){
@@ -219,18 +235,20 @@ double dissimilarity(char *w1, char *w2, char dict[][MAX_WORD_SIZE], double thre
             break;
         }
     }
-    if(index1 == -1){
 
-        return -1;
+    if(index1 == -1){ // if the word is not in the dictionary
+        return -1; 
     }
     
     double vector1[vector_size]; // user input vector
     double temp[vector_size]; // word vector for temp
-    findVector(index1,vector_size,num_word,vector1);
-    double distance = 40,temp_distance = 0;
+    findVector(index1,vector_size,num_word,vector1); // find the vector of the word
+    double distance = threshold,temp_distance = 0; // set the distance to a large number
 
-    char tempstr[MAX_WORD_SIZE];
-    while((fscanf(fp,"%[^ ]",tempstr))==1){
+    char tempstr[MAX_WORD_SIZE]; // temp string to read the word
+
+    // read each word and its vector and calculate the distance and find the closest word
+    while((fscanf(fp,"%[^ ]",tempstr))==1){ 
         for(int k=0;k<vector_size;k++){
             fscanf(fp," %lf",&temp[k]);
             temp_distance += pow((vector1[k]-temp[k]),2);
@@ -245,15 +263,16 @@ double dissimilarity(char *w1, char *w2, char dict[][MAX_WORD_SIZE], double thre
         t++;
         temp_distance = 0;
     }
-    strtostr(w2,dict[*closest_wordi]);
 
+    strtostr(w2,dict[*closest_wordi]); // copy the closest word to w2
+
+    fclose(fp); // close the file
     
-    fclose(fp);
-    
-    return distance;
+    return distance; 
 
 }
 
+// find the vector of the given word
 int findVector(int i,int vector_size,int num_word,double vector[]){
     FILE *fp; // file pointer
     fp = fopen("dictionary.txt", "r"); // open file for reading
@@ -261,11 +280,13 @@ int findVector(int i,int vector_size,int num_word,double vector[]){
         printf("Error: cannot open file %s\n", "dictionary.txt"); // print error message
         return -1;
     }
-    char temp[MAX_WORD_SIZE];
+    char temp[MAX_WORD_SIZE]; 
     int j=0;
-    // skip the first line
-    fscanf(fp,"num_word=%*[^,], vector_size=%*[^\n]\n");
-    while((fscanf(fp,"%[^ ]",temp))==1){
+
+    fscanf(fp,"num_word=%*[^,], vector_size=%*[^\n]\n");     // skip the first line
+
+    // read each word and its vector and find the vector of the given word
+    while((fscanf(fp,"%[^ ]",temp))==1){ 
         if(i!=j){
             fscanf(fp,"%*[^\n]\n");
         }
@@ -283,6 +304,7 @@ int findVector(int i,int vector_size,int num_word,double vector[]){
     return 0;
 }
 
+// copy src to dest
 int strtostr(char *dest, char *src){
     int i=0;
     while(src[i] != '\0'){
@@ -293,6 +315,7 @@ int strtostr(char *dest, char *src){
     return i;
 }
 
+// Histogram function 
 int histogram(const char words[][2*MAX_WORD_SIZE],const int occurrences[], char hist[][2*MAX_WORD_SIZE+5+20]){
     int scale, i=0;
     while(words[i][0] != '-'){
@@ -340,9 +363,8 @@ int histogram(const char words[][2*MAX_WORD_SIZE],const int occurrences[], char 
     }
     else{
 
-        if(findNotStr(words[0])) printf("\"%s\" doesn't appear in “input.txt”.\n",words[0]);
     
-        else if(!findDoubleStr(words[0])){
+        if(!findDoubleStr(words[0])){
             if(occurrences[0]!=0) printf("\"%s\" appears in “input.txt” %d times.\n",words[0],occurrences[0]);
             else printf("\"%s\" doesn't appear in “input.txt”.\n",words[0]);
         }
@@ -381,6 +403,7 @@ int findDoubleStr(const char *str){
     }
     return 0;
 }
+
 // find str includes ! sembol
 int findNotStr(const char *str){
     int i=0;
@@ -390,6 +413,7 @@ int findNotStr(const char *str){
     }
     return 0;
 }
+
 // strlength function
 int strlength(const char *str){
     int i=0;
