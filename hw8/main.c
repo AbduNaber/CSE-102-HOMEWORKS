@@ -11,6 +11,7 @@ typedef struct {
     int number;
     char direction;
     int score;
+    int last_play;
     int best_score;
     
 } puzzle8_t;
@@ -22,6 +23,7 @@ int update_board(puzzle8_t *puzzle,int number,char move);
 int check_board(puzzle8_t *puzzle);
 int update_zero(puzzle8_t *puzzle,char move,int *location);
 int isSolvable(puzzle8_t *puzzle);
+
 int main(){
     
     puzzle8_t puzzle;
@@ -241,69 +243,45 @@ int printtofile(puzzle8_t *puzzle){
     
 }
 
-int countInversions(puzzle8_t *puzzle)
-{
-    int inv = 0;
-    int i, j;
-    int size = ROW; // Size of a 3x3 puzzle
-    int number;
-    for (i = 0; i < size; i++)
-    {
-        for (j = 0; j < size; j++)
-        {
-            number = puzzle->board[i][j];
-            if (number == 0) // Skip the blank tile
-                continue;
-            
-            for (int k = i; k < size; k++)
-            {
-                for (int l = (k == i) ? j + 1 : 0; l < size; l++)
-                {
-                    int compare = puzzle->board[k][l];
-                    if (compare != 0 && number > compare)
-                        inv++;
-                }
-            }
-        }
-    }
-    return inv;
-}
-
 int isSolvable(puzzle8_t *puzzle){
-    int inversions = countInversions(puzzle);
-    int size = ROW; // Size of a 3x3 puzzle
-    int blankRow = 0;
-
-    // Find the row containing the blank tile
-    for (int i = 0; i < ROW; i++)
-    {
-        for (int j = 0; j < COL; j++)
-        {
-            if (puzzle->board[i][j] == 0)
-            {
-                blankRow = size - i;
-                break;
+    
+    int lineer_table[9];
+    int i,j,k;
+    int c=0;
+    for(i=0;i<ROW;i++){
+        for(j=0;j<COL;j++){
+            lineer_table[c]=puzzle->board[i][j];
+            c++;
+        }
+    }
+    int inv_count = 0;
+    for(k=0;k<9;k++){
+        for(i=k+1;i<9;i++){
+            if(lineer_table[i] && lineer_table[k] && lineer_table[k] > lineer_table[i]){
+                inv_count++;
             }
         }
     }
-
-    if (size % 2 != 0 && inversions % 2 == 0)
+    if(inv_count % 2 == 0){
         return 1;
-
-    else if (size % 2 == 0 && ((inversions + blankRow) % 2) != 0)
-        return 1;
-    else
+    }
+    else{
         return 0;
+    }
+    
 }
 
 int auto_play(puzzle8_t *puzzle){
-    char moves[4]= {'U','D','L','R'};
+
+    char moves[4]= {'U','D','L','R'}; 
+    
     FILE *fp;
     fp = fopen("board_history.txt","a+");
     if(fp == NULL){
         printf("Error opening board history file!\n");
         return -1;
     }
+
     fprintf(fp,"***********NEW GAME***********\n");
 
     printf("AUTO PLAY STARTED\n");
@@ -319,96 +297,123 @@ int auto_play(puzzle8_t *puzzle){
             }
         }
     }
-    int random=0;
 
+    int randMove;
     puzzle->direction = 'T';
     puzzle->score=0;
-    auto_finish(fp,puzzle,location_of_zero,random,moves);
-   fclose(fp);
+    
+    auto_play_start(puzzle,fp,moves,&randMove,&location_of_zero);
+    fclose(fp);
     return 0;
 }
 
-auto_finish(FILE *fp,puzzle8_t *puzzle,int location_of_zero,int random,char moves[4]){
 
-    random = rand() % 4;
-    
-    if(puzzle->direction == moves[random]){
-        auto_finish(fp,puzzle,location_of_zero,random,moves);
+int auto_play_start(puzzle8_t *puzzle,FILE *fp,char moves[],int *randMove,int *location_of_zero){
+    int count = 0;
+    while(check_board(puzzle) != 0){
+        count++;
+        auto_finish(puzzle,fp,moves,randMove,location_of_zero,&count);
     }
+    printf("Game finished!\n");
+}
     
-    else{
-        puzzle->direction = moves[random];
-    }
-    printf("random is %d\n",random);
-    if(!update_zero(puzzle,puzzle->direction,&location_of_zero)){
-        printf("computer move is %c total moves %d\n",puzzle->direction,puzzle->score);
-        printtofile(puzzle);
-    }
+int auto_finish(puzzle8_t *puzzle,FILE *fp,char moves[],int *randMove,int *location_of_zero,int *count){
     
- 
+    if(*count%50000==0){
+        return 1;
+    }
 
-    if(check_board(puzzle) == 0){
-        printf("GAME OVER\n");
-        printf("computer move is %c total moves %d\n",puzzle->direction,puzzle->score);
+    *randMove = rand()%4;
+    if((*randMove == 0 && puzzle->direction == 'D') || (*randMove == 1 && puzzle->direction == 'U') || (*randMove == 2 && puzzle->direction == 'R') || (*randMove == 3 && puzzle->direction == 'L')){
+        auto_finish(puzzle,fp,moves,randMove,location_of_zero,count);
+    }
+
+
+    switch(moves[*randMove]){
+        case 'U':
+            if(*location_of_zero < 6){
+
+                puzzle->last_play = puzzle->board[(*location_of_zero/3)+1][*location_of_zero%3];
+                printf("Computer move is %d-%c",puzzle->last_play,moves[*randMove]);
+                update_board(puzzle,puzzle->board[(*location_of_zero/3)+1][*location_of_zero%3],moves[*randMove]);
+                *location_of_zero = *location_of_zero + 3;
+                printtofile(puzzle);
+                puzzle->score++;
+                puzzle->direction = 'U';
+                
+            }
+            else{
+                printf("Invalid 1move!2\n");
+            }
+            break;
+        case 'D':
+            if(*location_of_zero > 2){
+
+                puzzle->last_play = puzzle->board[(*location_of_zero/3)-1][*location_of_zero%3];
+                printf("Computer move is %d-%c",puzzle->last_play,moves[*randMove]);
+                update_board(puzzle,puzzle->board[(*location_of_zero/3)-1][*location_of_zero%3],moves[*randMove]);
+                *location_of_zero = *location_of_zero - 3;
+                printtofile(puzzle);
+                puzzle->score++;
+                puzzle->direction = 'D';
+                
+            }
+            else{
+                printf("Invalid 1move!3\n");
+            }
+            break;
+        case 'L':
+            if((*location_of_zero)%3!=2 ){
+
+                puzzle->last_play = puzzle->board[*location_of_zero/3][(*location_of_zero%3)+1];
+                printf("Computer move is %d-%c",puzzle->last_play,moves[*randMove]);
+                update_board(puzzle,puzzle->board[*location_of_zero/3][(*location_of_zero%3)+1],moves[*randMove]);
+                *location_of_zero = *location_of_zero + 1;
+                printtofile(puzzle);
+                puzzle->score++;
+                puzzle->direction = 'L';
+                
+            }
+            else{
+                printf("Invalid 1move!4\n");
+            }
+            break;
+
+        case 'R':
+            if((*location_of_zero)%3 != 0){
+
+                puzzle->last_play = puzzle->board[*location_of_zero/3][(*location_of_zero%3)-1];
+                printf("Computer move is %d-%c",puzzle->last_play,moves[*randMove]);
+                update_board(puzzle,puzzle->board[*location_of_zero/3][(*location_of_zero%3)-1],moves[*randMove]);
+                *location_of_zero = *location_of_zero - 1;
+                printtofile(puzzle);
+                puzzle->score++;
+                puzzle->direction = 'R';
+                
+            }
+            else{
+                printf("Invalid 1move!5\n");
+            }
+            break;
+    }
+    printf(" The score is %d\n",puzzle->score);
+    printf("The last play is %d\n",puzzle->last_play);
+    printf("The direction is %c\n",puzzle->direction);
+    
+    if(check_board==0){
         return 0;
     }
-    else{
-        auto_finish(fp,puzzle,location_of_zero,random,moves);
-    }
-}
-
-int update_zero(puzzle8_t *puzzle,char move,int *location){
-
-    int i = *location/3;
-    int j = *location%3;
-    switch(move){
-        case 'U':
-            if(i-1 >= 0){
-                puzzle->board[i][j] = puzzle->board[i-1][j];
-                puzzle->board[i-1][j] = 0;
-                *location = *location - 3;
-                puzzle->score++;
-                return 0;
-            }
-            else{
-                return 1;
-            }
-        case 'D':
-            if(i+1 < 3){
-                puzzle->board[i][j] = puzzle->board[i+1][j];
-                puzzle->board[i+1][j] = 0;
-                puzzle->score++;
-                *location = *location + 3;
-                return 0;
-            }
-            else{
-                return 1;
-            }
-        case 'L':
-            if(j-1 >= 0){
-                puzzle->board[i][j] = puzzle->board[i][j-1];
-                puzzle->board[i][j-1] = 0;
-                puzzle->score++;
-                *location = *location - 1;
-                return 0;
-            }
-            else{
-                return 1;
-            }
-        case 'R':
-            if(j+1 < 3){
-                puzzle->board[i][j] = puzzle->board[i][j+1];
-                puzzle->board[i][j+1] = 0;
-                puzzle->score++;
-                *location = *location + 1;
-                return 0;
-            }
-            else{
-                return 1;
-            }
-    }
-}
     
+    else{
+        *count++;
+        auto_finish(puzzle,fp,moves,randMove,location_of_zero,count);
+    }
+
+
+
+    }
+    
+
    
 
 
