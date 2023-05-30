@@ -2,16 +2,15 @@
 #include "util.h"
 
 int main(){
-    block_t ***board =init_board(); ;
-    printf("%c",board[0][0][0].type);
+    block_t ***board;
     snake_t snake[2];
     snake[0].col = 0;
     snake[0].row = 1;
     snake[1].col = 0;
     snake[1].row = 0;
 
-    
-    
+    init_board(board);
+    printf("%c",board[0][0][0].type);
    // draw_board(board,snake,2);
 
     // free board
