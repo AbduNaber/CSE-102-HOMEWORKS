@@ -1,9 +1,9 @@
 #include "util.h"
 
-int  init_board(block_t ***boardp){
+int init_board(block_t ***boardp){
     srand(time(NULL));
 
-    
+
     boardp = (block_t ***)malloc(sizeof(block_t **) * ROW);
 
     int i,j;
