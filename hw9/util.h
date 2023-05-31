@@ -26,4 +26,6 @@ block_t *** init_board();
 void play(block_t ***block);
 
 void draw_board(block_t ***board,snake_t *snake,int snakesize);
+
+int check_status(const block_t ***board,const snake_t *snake,int snakesize,char move);
 #endif /* _UTIL_H_ */

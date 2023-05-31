@@ -67,24 +67,28 @@ block_t *** init_board(){
 
 void draw_board(block_t ***board,snake_t *snake,int snakesize){
     
-    int i,j,k,flag=0;
-    for(i=0;i<ROW*2;i++){
-        printf("-");
-    }
+    int i,j,k,t,flag=0;
+
+    
+
     printf("\n");
     for(i=0;i<ROW;i++){
+        for(t=0;t<ROW*4+1;t++){
+        printf("-");
+        }
+        printf("\n");
         for(j=0;j<COL;j++){
             printf("|");
             flag=0;
             for(k=0;k<snakesize;k++){
                 if(snake[k].row==i && snake[k].col == j && k!= 0){
-                    printf("X");
+                    printf(" X ");
                     flag=1;
                     k=snakesize+1;
                     
                 }
                 else if(snake[k].row==i && snake[k].col == j && k== 0){
-                    printf("O");
+                    printf(" O ");
                     flag=1;
                     k=snakesize+1;
                 }
@@ -92,24 +96,28 @@ void draw_board(block_t ***board,snake_t *snake,int snakesize){
             if(flag==0){
 
                 if(board[i][j][0].type=='e'){
-                    printf("\b"); 
+                    printf("%s","   "); 
                 }
 
                 else if(board[i][j][0].type=='b'){
-                    printf(".");
+                    printf(" . ");
                 }
 
                 else if(board[i][j][0].type=='o'){
-                    printf("%d",board[i][j][0].value);
+                    printf(" %d ",board[i][j][0].value);
                 }
 
             }
             
             
         }
-        printf("\n");
+        printf("|\n");
     }
-
+    for(t=0;t<ROW*4+1;t++){
+        printf("-");
+        }
+    printf("\n");
+        
 }
 
 void play(block_t ***board){
@@ -117,9 +125,93 @@ void play(block_t ***board){
     // init snake
     snake_t *snake;
     snake = (snake_t *)malloc(sizeof(snake_t));
-    snake->row = 0;
-    snake->col = 0;
-
+    snake[0].row = 0;
+    snake[0].col = 0;
+    
+    char move;
     printf(">");
+    scanf(" %c",&move);
 
 }
+
+int check_status(const block_t ***board,const snake_t *snake,int snakesize,char move){
+    
+    switch(move){
+        case 'w':
+
+            if(snake[0].row == 0){
+                return 1;
+            }
+
+            else if(board[snake[0].row-1][snake[0].col][0].type == 'o'){
+                if(board[snake[0].row-1][snake[0].col][0].value > snakesize){
+                    return 1;
+                }
+            } 
+              
+            for(int i=0;i<snakesize;i++){
+                if(snake[i].row == snake[0].row-1 && snake[i].col == snake[0].col){
+                    return 1;
+                }
+            }
+            
+            break;
+
+        case 'a':
+
+            if(snake[0].col == 0){
+                return 1;
+            }
+
+            else if(board[snake[0].row][snake[0].col-1][0].type == 'o'){
+                if(board[snake[0].row][snake[0].col-1][0].value > snakesize){
+                    return 1;
+                }
+            }
+
+            for(int i=0;i<snakesize;i++){
+                if(snake[i].row == snake[0].row && snake[i].col == snake[0].col-1){
+                    return 1;
+                }
+            }
+
+            break;
+        case 's':
+            
+            if(snake[0].row+1 == ROW){
+                return 1;
+            }
+
+            else if(board[snake[0].row+1][snake[0].col][0].type == 'o'){
+                if(board[snake[0].row+1][snake[0].col][0].value > snakesize){
+                    return 1;
+                }
+            }
+            for(int i=0;i<snakesize;i++){
+                if(snake[i].row == snake[0].row+1 && snake[i].col == snake[0].col){
+                    return 1;
+                }
+            }
+            break;
+        case 'd':
+
+            if(snake[0].col+1 == COL){
+                return 1;
+            }
+
+            else if(board[snake[0].row][snake[0].col+1][0].type == 'o'){
+                if(board[snake[0].row][snake[0].col+1][0].value > snakesize){
+                    return 1;
+                }
+            }
+            for(int i=0;i<snakesize;i++){
+                if(snake[i].row == snake[0].row && snake[i].col == snake[0].col+1){
+                    return 1;
+                }
+            }
+            break;
+
+    }
+    return 0;
+}
+
