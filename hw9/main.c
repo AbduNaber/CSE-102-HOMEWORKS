@@ -3,9 +3,8 @@
 
 int main(){
     
-    block_t ***board;
-    init_board(board);
-    printf("%d",board[0][0][0].type);
+    block_t ***board = init_board();
+
 
    // draw_board(board,snake,2);
 

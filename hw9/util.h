@@ -20,7 +20,7 @@ typedef struct {
     int col;
 } snake_t;
 
-int init_board(block_t ***block);
+block_t *** init_board();
 
 void play(block_t ***block);
 
