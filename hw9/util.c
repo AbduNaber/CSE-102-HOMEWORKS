@@ -1,21 +1,21 @@
 #include "util.h"
 
-block_t *** init_board(){
+int init_board(block_t ***boardp){
     srand(time(NULL));
-    
-    
-    block_t ***board = (block_t ***)malloc(sizeof(block_t **) * ROW);
+
+
+    boardp = (block_t ***)malloc(sizeof(block_t **) * ROW);
 
     int i,j;
     for(i = 0; i < ROW; i++){
 
-        board[i] = (block_t **)malloc(sizeof(block_t *) * COL);
+        boardp[i] = (block_t **)malloc(sizeof(block_t *) * COL);
 
         for(j=0;j< COL ; j++){
-        board[i][j]= (block_t*)malloc(sizeof(sizeof(block_t)));
+        boardp[i][j]= (block_t*)malloc(sizeof(sizeof(block_t)));
         // default block is empty block
-        board[i][j][0].type = 'e';
-        board[i][j][0].value = 0;
+        boardp[i][j][0].type = 'e';
+        boardp[i][j][0].value = 0;
         }
 
     }
@@ -29,15 +29,15 @@ block_t *** init_board(){
         obstacle_row = rand() % ROW;
         obstacle_col = rand() % COL;
         
-        if(board[obstacle_row][obstacle_col][0].type == 'e' && (obstacle_col != 0 && obstacle_row != 0)){
+        if(boardp[obstacle_row][obstacle_col][0].type == 'e' && (obstacle_col != 0 && obstacle_row != 0)){
 
-            board[obstacle_row][obstacle_col] = (block_t *)realloc(board[obstacle_row][obstacle_col], sizeof(block_t) * obstacle_height+1);
-            board[obstacle_row][obstacle_col][0].type = 'o';
-            board[obstacle_row][obstacle_col][0].value = obstacle_height;
+            boardp[obstacle_row][obstacle_col] = (block_t *)realloc(boardp[obstacle_row][obstacle_col], sizeof(block_t) * obstacle_height+1);
+            boardp[obstacle_row][obstacle_col][0].type = 'o';
+            boardp[obstacle_row][obstacle_col][0].value = obstacle_height;
 
             for(j = 1; j < obstacle_height+1; j++){
-            board[obstacle_row][obstacle_col][j].type = 'o';
-            board[obstacle_row][obstacle_col][j].value = j;
+            boardp[obstacle_row][obstacle_col][j].type = 'o';
+            boardp[obstacle_row][obstacle_col][j].value = j;
             }
         }
         else{
@@ -51,17 +51,17 @@ block_t *** init_board(){
     for(int k=0;k<1;k++){
         bait_row = rand() % ROW;
         bait_col = rand() % COL;
-        if(board[bait_row][bait_col][0].type == 'e' &&(bait_col != 0 && bait_row != 0)){
-            board[bait_row][bait_col][0].type = 'b';
-            board[bait_row][bait_col][0].value = 0;
+        if(boardp[bait_row][bait_col][0].type == 'e' &&(bait_col != 0 && bait_row != 0)){
+            boardp[bait_row][bait_col][0].type = 'b';
+            boardp[bait_row][bait_col][0].value = 0;
         }
         else{
             k--;
         }
     }
 
-   
-    return board;
+
+    return 0;
    
 }   
 
