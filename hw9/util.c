@@ -3,7 +3,6 @@
 block_t *** init_board(){
     srand(time(NULL));
 
-
     block_t ***board = (block_t ***)malloc(sizeof(block_t **) * ROW);
 
     int i,j;
@@ -29,7 +28,6 @@ block_t *** init_board(){
     obstacle_col = 1 + rand() % (COL-1);
     obstacle_row = 1 + rand() % (ROW-1);
     
-
     board[obstacle_row][obstacle_col] = (block_t *)realloc(board[obstacle_row][obstacle_col], sizeof(block_t) * obstacle_height+1);
     board[obstacle_row][obstacle_col][0].type = 'o';
     board[obstacle_row][obstacle_col][0].value = obstacle_height;
@@ -38,10 +36,6 @@ block_t *** init_board(){
     board[obstacle_row][obstacle_col][j].type = 'o';
     board[obstacle_row][obstacle_col][j].value = j;
     }
-
-
-
-
     // create bait block
     int bait_row, bait_col;
     for(int k=0;k<1;k++){
@@ -56,7 +50,6 @@ block_t *** init_board(){
         }
     }
 
-
     return board;
 
 }   
@@ -64,27 +57,24 @@ block_t *** init_board(){
 void draw_board(block_t ***board,snake_t *snake,int snakesize){
     
     int i,j,k,t,flag=0;
-
-    
-    printf("snake_size %d\n",snakesize);
-    printf("\n");
-    for(i=0;i<ROW;i++){
-        for(t=0;t<ROW*4+1;t++){
+    printf(" ");
+    for(t=0;t<ROW+1;t++){
         printf("-");
         }
-        printf("\n");
+    printf("\n");
+    for(i=0;i<ROW;i++){
+        printf("|");
         for(j=0;j<COL;j++){
-            printf("|");
             flag=0;
             for(k=0;k<snakesize;k++){
                 if(snake[k].row==i && snake[k].col == j && k!= 0){
-                    printf(" X ");
+                    printf("X");
                     flag=1;
                     k=snakesize+1;
                     
                 }
                 else if(snake[k].row==i && snake[k].col == j && k== 0){
-                    printf(" O ");
+                    printf("O");
                     flag=1;
                     k=snakesize+1;
                 }
@@ -92,24 +82,22 @@ void draw_board(block_t ***board,snake_t *snake,int snakesize){
             if(flag==0){
 
                 if(board[i][j][0].type=='e'){
-                    printf("%s","   "); 
+                    printf("%s"," "); 
                 }
 
                 else if(board[i][j][0].type=='b'){
-                    printf(" . ");
+                    printf(".");
                 }
 
                 else if(board[i][j][0].type=='o'){
-                    printf(" %d ",board[i][j][0].value);
+                    printf("%d",board[i][j][0].value);
                 }
-
-            }
-            
-            
+            }  
         }
         printf("|\n");
     }
-    for(t=0;t<ROW*4+1;t++){
+    printf(" ");
+    for(t=0;t<ROW+1;t++){
         printf("-");
         }
     printf("\n");
@@ -138,7 +126,7 @@ void play(block_t ***board){
             exit(0);
         }
         else{
-            update(board,&snake,&snakesize,old_pos,&score);
+            update(board,&snake,&snakesize,old_pos,&score,&obsctacle_num);
             draw_board(board,snake,snakesize);
 
         }  
@@ -209,11 +197,11 @@ int move(snake_t *snake){
    
 }
 
-int update(block_t ***board,snake_t **snake,int *snakesize,int old_pos,int *score ){
+int update(block_t ***board,snake_t **snake,int *snakesize,int old_pos,int *score ,int *obstacle_num){
     
     snake_t *temp_snake = (snake_t *)malloc(sizeof(snake_t) * (*snakesize));
 
-    int i,j,k;
+    int i,j,k,flag;
 
     temp_snake[0].row = (*snake)[0].row;
     temp_snake[0].col = (*snake)[0].col;
@@ -242,9 +230,44 @@ int update(block_t ***board,snake_t **snake,int *snakesize,int old_pos,int *scor
         
     }
     else if(board[(*snake)[0].row][(*snake)[0].col][0].type  == 'o'){
-            board[(*snake)[0].row][(*snake)[0].col][0].type = 'e';
+            board[(*snake)[0].row][(*snake)[0].col][0].type = 'e';  
+            board[(*snake)[0].row][(*snake)[0].col][0].value = 0;
+            (*obstacle_num)--;
             }
-        
+    
+    // create new obstacle every 5 score and increase obstacle value does exist
+    if((*score) % 5 == 0 && *score != 0){
+        for(i=0;i<ROW;i++){
+            for(j=0;j<COL;j++){
+                if(board[i][j][0].type == 'o'){
+                   if(board[i][j][0].value < 9){
+                        board[i][j][0].value++;
+                   }
+                }
+            }
+        }
+        if(*obstacle_num < 3 ){
+            int obstacle_row,obstacle_col;
+            do{
+                flag = 0;
+                obstacle_row = rand() % ROW;
+                obstacle_col = rand() % COL;
+                for(i=0;i<(*snakesize);i++){
+                    if(obstacle_row == (*snake)[i].row && obstacle_col == (*snake)[i].col){
+                        flag = 1;
+                        break;
+                    }
+                }
+            }while(board[obstacle_row][obstacle_col][0].type != 'e' && flag !=1);
+
+            board[obstacle_row][obstacle_col][0].type = 'o';
+            board[obstacle_row][obstacle_col][0].value = rand() % 9 + 1;
+            (*obstacle_num)++;
+        }
+
+       
+    }
+
     temp_snake[1].row = old_pos / COL;
     temp_snake[1].col = old_pos % COL;
     for(i=2;i<(*snakesize);i++){
@@ -257,6 +280,7 @@ int update(block_t ***board,snake_t **snake,int *snakesize,int old_pos,int *scor
         (*snake)[i].row = temp_snake[i].row;
         (*snake)[i].col = temp_snake[i].col;
     }
+    (*score)++;
     free(temp_snake);
     return 0;
 }
