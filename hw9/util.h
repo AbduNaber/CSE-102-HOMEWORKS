@@ -21,12 +21,10 @@ typedef struct {
 } snake_t;
 
 block_t *** init_board();
-
 void play(block_t ***block);
-
 void draw_board(block_t ***board,snake_t *snake,int snakesize);
-
 int check_status(block_t ***board,const snake_t *snake,int snakesize);
 int move(snake_t *snake);
 int update(block_t ***board,snake_t **snake,int *snakesize,int old_pos,int *score,int *obsctacle_num);
+
 #endif /* _UTIL_H_ */

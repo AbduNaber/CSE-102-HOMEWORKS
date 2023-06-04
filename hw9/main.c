@@ -5,7 +5,6 @@ int main(){
     
     block_t ***board = init_board();
 
-
     play(board);
 
     // free board

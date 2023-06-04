@@ -1,11 +1,22 @@
 #include "util.h"
 
+/*
+ * init_board function
+ * create board and return it 
+ * board is 3 dimensional array
+ * block has type and value
+ * type is 'e' for empty block 'o' for obstacle block 'b' for bait block
+ * value is 0 for empty block and bait block for obstacle block value is obstacle height
+ * obstacle height is random number between 1 and 9 
+ * bait block is random block
+ */
 block_t *** init_board(){
     srand(time(NULL));
 
-    block_t ***board = (block_t ***)malloc(sizeof(block_t **) * ROW);
+    block_t ***board = (block_t ***)malloc(sizeof(block_t **) * ROW); // create board
 
     int i,j;
+    // create board and fill with empty block 
     for(i = 0; i < ROW; i++){
 
         board[i] = (block_t **)malloc(sizeof(block_t *) * COL);
@@ -18,15 +29,12 @@ block_t *** init_board(){
         }
 
     }
-    // create obstacle block max obstacle number is 3 min is 1
 
-    int obstacle_row, obstacle_col,obstacle_height;
-
-
-    obstacle_height = rand() % MAX_DEPTH + 1;
-    // create obstacle block except first row and first column
-    obstacle_col = 1 + rand() % (COL-1);
-    obstacle_row = 1 + rand() % (ROW-1);
+    // create obstacle block
+    int obstacle_row, obstacle_col,obstacle_height; 
+    obstacle_height = rand() % MAX_DEPTH + 1; // create obstacle height between 1 and 9
+    obstacle_col = 1 + rand() % (COL-1);  // create obstacle block except first row and first column
+    obstacle_row = 1 + rand() % (ROW-1);  // create obstacle block except first row and first column
     
     board[obstacle_row][obstacle_col] = (block_t *)realloc(board[obstacle_row][obstacle_col], sizeof(block_t) * obstacle_height+1);
     board[obstacle_row][obstacle_col][0].type = 'o';
@@ -36,6 +44,8 @@ block_t *** init_board(){
     board[obstacle_row][obstacle_col][j].type = 'o';
     board[obstacle_row][obstacle_col][j].value = j;
     }
+    // end of create obstacle block
+
     // create bait block
     int bait_row, bait_col;
     for(int k=0;k<1;k++){
@@ -49,31 +59,42 @@ block_t *** init_board(){
             k--;
         }
     }
-
+    // end of create bait block
+    
     return board;
 
-}   
+}
 
+/*
+ * draw_board function
+ * draw board
+ * if block is empty print " ", if block is bait print ".", if block is obstacle print obstacle height
+ * if block is snake head print "O", if block is snake body print "X" 
+*/
 void draw_board(block_t ***board,snake_t *snake,int snakesize){
     
     int i,j,k,t,flag=0;
+
+    // print top of board
     printf(" ");
-    for(t=0;t<ROW+1;t++){
+    for(t=0;t<ROW;t++){
         printf("-");
         }
     printf("\n");
+
+    // print board
     for(i=0;i<ROW;i++){
         printf("|");
         for(j=0;j<COL;j++){
             flag=0;
             for(k=0;k<snakesize;k++){
-                if(snake[k].row==i && snake[k].col == j && k!= 0){
+                if(snake[k].row==i && snake[k].col == j && k!= 0){ // if block is snake body print "X"
                     printf("X");
                     flag=1;
                     k=snakesize+1;
                     
                 }
-                else if(snake[k].row==i && snake[k].col == j && k== 0){
+                else if(snake[k].row==i && snake[k].col == j && k== 0){ // if block is snake head print "O"
                     printf("O");
                     flag=1;
                     k=snakesize+1;
@@ -81,72 +102,81 @@ void draw_board(block_t ***board,snake_t *snake,int snakesize){
             }
             if(flag==0){
 
-                if(board[i][j][0].type=='e'){
-                    printf("%s"," "); 
+                if(board[i][j][0].type=='e'){ // if block is empty print " "
+                    printf("%s"," ");  
                 }
 
-                else if(board[i][j][0].type=='b'){
+                else if(board[i][j][0].type=='b'){ // if block is bait print "."
                     printf(".");
                 }
 
-                else if(board[i][j][0].type=='o'){
+                else if(board[i][j][0].type=='o'){ // if block is obstacle print obstacle height
                     printf("%d",board[i][j][0].value);
                 }
             }  
         }
         printf("|\n");
     }
+    // print bottom of board
     printf(" ");
-    for(t=0;t<ROW+1;t++){
+    for(t=0;t<ROW;t++){
         printf("-");
         }
     printf("\n");
         
 }
 
+/*
+ * play function
+ * play game
+ * get board ,create snake and init snake to top left corner 
+ * play game until game over
+*/
 void play(block_t ***board){
 
     // init snake
-    snake_t *snake;
+    snake_t *snake; // snake is array of snake block
     int score = 0;
     int snakesize = 1;
     int old_pos ;
     int obsctacle_num = 1;
-    snake = (snake_t *)malloc(sizeof(snake_t));
+    snake = (snake_t *)malloc(sizeof(snake_t)); // create snake
     
-    snake[0].row = 0; snake[0].col = 0;
+    snake[0].row = 0; snake[0].col = 0; // init snake to top left corner
 
-    draw_board(board,snake,snakesize);
-
-
+    draw_board(board,snake,snakesize); // draw board
     do{
-        old_pos = move(snake);
-        if(check_status(board,snake,snakesize) == 1){
+        old_pos = move(snake); //move  and get old position of snake head
+        if(check_status(board,snake,snakesize) == 1){ // check game status
             printf("Game Over\n");
             exit(0);
         }
         else{
-            update(board,&snake,&snakesize,old_pos,&score,&obsctacle_num);
-            draw_board(board,snake,snakesize);
+            update(board,&snake,&snakesize,old_pos,&score,&obsctacle_num); // update board
+            draw_board(board,snake,snakesize); // draw board
 
         }  
     }while(1);
 
-    free(snake);
+    free(snake); // free snake
 
     
 
 
 }
 
+/***
+ * check_status function
+ * check game status
+ * if snake hit itself or snake hit wall or obstacle that its height is higher than snake length return 1
+ * else return 0
+ */
 int check_status(block_t ***board,const snake_t *snake,int snakesize){
 
     // find if snake hit itself , condition is head of snake has same row and col with other snake block
     for(int i=0;i<snakesize;i++){
         for(int j=i+1;j<snakesize;j++){
             if(snake[i].row == snake[j].row && snake[i].col == snake[j].col ){
-                    printf("%d %d\n",snake[i].row,snake[i].col);
-
                     printf("Game Over due to snake crashed itself\n");
                  return 1;
             }
@@ -169,16 +199,25 @@ int check_status(block_t ***board,const snake_t *snake,int snakesize){
     return 0;
 }
 
+
+/**
+ * move function
+ * get move from user
+ * if move is valid head of snake is moved and return old position of snake head
+ * else get move again
+*/
 int move(snake_t *snake){
+
         char mov;
-        int old_pos = snake[0].row * COL + snake[0].col;
+        int old_pos = snake[0].row * COL + snake[0].col; // old position of snake head
         printf(">");
         scanf(" %c",&mov);
         if(mov != 'w' && mov != 'a' && mov != 's' && mov != 'd'){
-            printf("Invalid move enter again!! \n");
+            printf("Invalid move enter again!! \n"); // if move is invalid get move again
             move(snake);
         }
-        
+
+        // move snake head
         switch(mov){
             case 'w':
                 snake[0].row--;
@@ -197,25 +236,29 @@ int move(snake_t *snake){
    
 }
 
+
+/**
+ * update function
+ * update board
+ * if snake hit bait snake size increase by 1 
+ * if snake hit obstacle snake , obstacle will be removed and create new obstacle with random height
+ * if snake hit empty block snake move
+*/
 int update(block_t ***board,snake_t **snake,int *snakesize,int old_pos,int *score ,int *obstacle_num){
     
-    snake_t *temp_snake = (snake_t *)malloc(sizeof(snake_t) * (*snakesize));
+    snake_t *temp_snake = (snake_t *)malloc(sizeof(snake_t) * (*snakesize)); // create temp snake
 
-    int i,j,k,flag;
+    int i,j,k,flag; // i,j,k for loop , flag for check if snake hit something
 
-    temp_snake[0].row = (*snake)[0].row;
-    temp_snake[0].col = (*snake)[0].col;
-    printf(" %c \n",board[(*snake)[0].row][(*snake)[0].col][0].type);
-    // print all position of snake
-    for(i=0;i<(*snakesize);i++){
-        printf(" %d %d \n",(*snake)[i].row,(*snake)[i].col);
-    }
+    temp_snake[0].row = (*snake)[0].row; // temp snake head is new position of snake head
+    temp_snake[0].col = (*snake)[0].col; // temp snake head is new position of snake head
+
+    // if snake hit bait
     if(board[(*snake)[0].row][(*snake)[0].col][0].type == 'b'){
-        (*snakesize)++;
-        printf(" %d \n",(*snakesize));
-        temp_snake = (snake_t *)realloc(temp_snake,sizeof(snake_t) * (*snakesize));
-        board[(*snake)[0].row][(*snake)[0].col][0].type = 'e';
-        board[(*snake)[0].row][(*snake)[0].col][0].value = 0;
+        (*snakesize)++; // snake size increase by 1
+        temp_snake = (snake_t *)realloc(temp_snake,sizeof(snake_t) * (*snakesize)); // realloc temp snake
+        board[(*snake)[0].row][(*snake)[0].col][0].type = 'e'; // change type of block to empty
+        board[(*snake)[0].row][(*snake)[0].col][0].value = 0; // change value of block to 0
 
         // create new bait
         int bait_row,bait_col;
@@ -226,9 +269,11 @@ int update(block_t ***board,snake_t **snake,int *snakesize,int old_pos,int *scor
 
         board[bait_row][bait_col][0].type = 'b';
         board[bait_row][bait_col][0].value = 0;
-
+        // end of create new bait
+    
         
     }
+    // if snake hit obstacle, remove obstacle and create new obstacle with random height
     else if(board[(*snake)[0].row][(*snake)[0].col][0].type  == 'o'){
             board[(*snake)[0].row][(*snake)[0].col][0].type = 'e';  
             board[(*snake)[0].row][(*snake)[0].col][0].value = 0;
@@ -267,7 +312,9 @@ int update(block_t ***board,snake_t **snake,int *snakesize,int old_pos,int *scor
 
        
     }
+    // end of create new obstacle
 
+    //set temp snake to actual snake position except head of snake 
     temp_snake[1].row = old_pos / COL;
     temp_snake[1].col = old_pos % COL;
     for(i=2;i<(*snakesize);i++){
@@ -280,7 +327,8 @@ int update(block_t ***board,snake_t **snake,int *snakesize,int old_pos,int *scor
         (*snake)[i].row = temp_snake[i].row;
         (*snake)[i].col = temp_snake[i].col;
     }
-    (*score)++;
-    free(temp_snake);
+    // end of set temp snake to actual snake position except head of snake
+    (*score)++; // increase score by 1
+    free(temp_snake); // free temp snake
     return 0;
 }
