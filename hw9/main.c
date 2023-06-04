@@ -6,10 +6,10 @@ int main(){
     block_t ***board = init_board();
 
 
-   // draw_board(board,snake,2);
+    play(board);
 
     // free board
-   for(int i=0;i<ROW;i++){
+    for(int i=0;i<ROW;i++){
         for(int j=0;j<COL;j++){
             free(board[i][j]);
         }
