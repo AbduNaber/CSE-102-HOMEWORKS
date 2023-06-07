@@ -136,7 +136,7 @@ void play(block_t ***board){
 
     // init snake
     snake_t *snake; // snake is array of snake block
-    int score = 0;
+    int score = 1;
     int snakesize = 1;
     int old_pos ;
     int obsctacle_num = 1;
