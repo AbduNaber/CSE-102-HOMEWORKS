@@ -52,9 +52,4 @@ Mkfile.old
 dkms.conf
 *.zip
 test_folder/
-210104004072/*
-
-.vscode/*
-
-# ignore vscode
 .vscode/*
