@@ -1,46 +1,21 @@
-9786543210987,Lodore,Mary Shelley,1835,0
-9787654321098,Valperga,Mary Shelley,1823,0
-9788765432109,Mathilda,Mary Shelley,1959,0
-9789876543210,The Last Man,Mary Shelley,1826,0
-9780987654321,Frankenstein,Mary Shelley,1818,0
-9781098765432,The Waves,Virginia Woolf,1931,0
-9782109876543,A Room of One's Own,Virginia Woolf,1929,0
-9783210987654,Orlando,Virginia Woolf,1928,0
-9784321098765,Mrs Dalloway,Virginia Woolf,1925,0
-9785432109876,To the Lighthouse,Virginia Woolf,1927,0
-9786543210987,The Unfinished Tales,Tolkien,1980,0
-9787654321098,The Children of Húrin,Tolkien,2007,0
-9788765432109,The Silmarillion,Tolkien,1977,0
-9789876543210,The Lord of the Rings,Tolkien,1954,0
-9780987654321,The Hobbit,Tolkien,1937,0
-9781098765432,Ape and Essence,Aldous Huxley,1948,0
-9782109876543,Crome Yellow,Aldous Huxley,1921,0
-9783210987654,Point Counter Point,Aldous Huxley,1928,0
-9784321098765,Island,Aldous Huxley,1962,0
-9785432109876,Brave New World,Aldous Huxley,1932,0
-9786543210987,For Esmé with Love and Squalor,Salinger,1950,0
-9787654321098,Carpenters and Seymour: An Introduction,Salinger,1955,0
-9788765432109,Nine Stories,Salinger,1953,0
-9789876543210,Franny and Zooey,Salinger,1961,0
-9780987654321,The Catcher in the Rye,Salinger,1951,0
-9781098765432,Omoo,Herman Melville,1847,0
-9782109876543,Typee,Herman Melville,1846,0
-9783210987654,Bartleby,Herman Melville,1853,0
-9784321098765,Billy Budd,Herman Melville,1924,0
-9785432109876,Moby-Dick,Herman Melville,1851,0
-9786543210987,The Last Tycoon,Scott Fitzgerald,1941,0
-9787654321098,The Beautiful and Damned,Scott Fitzgerald,1922,0
-9788765432109,This Side of Paradise,Scott Fitzgerald,1920,0
-9789876543210,Tender Is the Night,Scott Fitzgerald,1934,0
-9780987654321,The Great Gatsby,Scott Fitzgerald,1925,0
-9780123456789,Keep the Aspidistra Flying,George Orwell,1936,0
+9789876543210,Tender Is the Night,Scott Fitzgerald,1934,1
 9789123456789,Down and Out in Paris and London,George Orwell,1933,0
-9788912345678,Burmese Days,George Orwell,1934,0
+9788912345678,Burmese Days,George Orwell,1934,1
+9788765432109,Mathilda,Mary Shelley,1959,0
 9787891234567,Animal Farm,George Orwell,1945,0
+9787654321098,Valperga,Mary Shelley,1823,0
 9786789123456,1984,George Orwell,1949,0
+9786543210987,The Last Tycoon,Scott Fitzgerald,1941,0
+9786543210912,oyuncaklar,Arda Yasan,2023,0
 9785678912345,Persuasion,Jane Austen,1817,0
+9785432109876,Moby-Dick,Herman Melville,1851,0
 9784567891234,Mansfield Park,Jane Austen,1814,0
+9784321098765,Island,Aldous Huxley,1962,0
 9783456789123,Emma,Jane Austen,1815,0
+9783210987654,Point Counter Point,Aldous Huxley,1928,0
 9782345678912,Sense and Sensibility,Jane Austen,1811,0
+9782109876543,Typee,Herman Melville,1846,1
 9781234567897,Pride and Prejudice,Jane Austen,1813,0
-9786543210912,Bombalama,Arda Yasan,2023,0
+9781098765432,The Waves,Virginia Woolf,1931,1
+9780987654321,Frankenstein,Mary Shelley,1818,1
+9780123456789,Keep the Aspidistra Flying,George Orwell,1936,1
