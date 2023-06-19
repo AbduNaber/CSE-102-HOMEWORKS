@@ -1,0 +1,4 @@
+Zehra,45,Ali,Ayse
+Bekir,31,Ali,Ayse
+Ali,82,NULL,NULL
+Ayse,89,NULL,NULL
