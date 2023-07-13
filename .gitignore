@@ -53,3 +53,6 @@ dkms.conf
 *.zip
 test_folder/
 .vscode/*
+*.bin
+210104004072/
+.vscode/

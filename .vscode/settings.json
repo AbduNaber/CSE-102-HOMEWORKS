@@ -3,6 +3,8 @@
         "stdio.h": "c",
         "cstdio": "c",
         "util.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "string.h": "c",
+        "type_traits": "c"
     }
 }
